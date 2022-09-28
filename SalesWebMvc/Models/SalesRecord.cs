@@ -7,14 +7,14 @@ namespace SalesWebMvc.Models
         public int Id { get; set; }
         public DateTime Date { get; set; }
         public double Amount { get; set; }
-        public ESaleStatus status { get; set; }
+        public SaleStatus status { get; set; }
         public Seller Seller { get; set; }
         public SalesRecord()
         {
 
         }
 
-        public SalesRecord(int id, DateTime date, double amount, ESaleStatus status, Seller seller)
+        public SalesRecord(int id, DateTime date, double amount, SaleStatus status, Seller seller)
         {
             Id = id;
             Date = date;
@@ -23,7 +23,7 @@ namespace SalesWebMvc.Models
             Seller = seller;
         }
     }
-    public enum ESaleStatus : int
+    public enum SaleStatus : int
     {
         Pending=0,
         Billed = 1,

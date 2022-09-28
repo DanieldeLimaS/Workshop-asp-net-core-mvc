@@ -1,14 +1,9 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using SalesWebMvc.Data;
 
 namespace SalesWebMvc
@@ -19,7 +14,6 @@ namespace SalesWebMvc
         {
             var builder = new ConfigurationBuilder()
               .SetBasePath(env.ContentRootPath)
-              .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
               .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
               .AddEnvironmentVariables();
 
@@ -32,9 +26,12 @@ namespace SalesWebMvc
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            string mySqlConnectionStr = Configuration.GetConnectionString("ConnectionMySql");
+            services.AddDbContext<SalesWebMvcContext>(options => 
+            options.UseMySQL(mySqlConnectionStr));
+           
 
-            services.AddDbContext<SalesWebMvcContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("SalesWebMvcContext")));
+          
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

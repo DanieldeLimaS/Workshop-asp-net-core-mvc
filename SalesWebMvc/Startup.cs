@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SalesWebMvc.Data;
+using SalesWebMvc.Services;
 
 namespace SalesWebMvc
 {
@@ -27,20 +28,24 @@ namespace SalesWebMvc
         {
             services.AddControllersWithViews();
             string mySqlConnectionStr = Configuration.GetConnectionString("ConnectionMySql");
-            services.AddDbContext<SalesWebMvcContext>(options => 
+            services.AddDbContext<SalesWebMvcContext>(options =>
             options.UseMySQL(mySqlConnectionStr));
-            services.AddScoped<SeedingService>();
 
-          
+            services.AddScoped<SeedingService>();
+            services.AddScoped<SellerService>();
+            services.AddScoped<DepartmentService>();
+            services.AddScoped<SalesRecordService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,SeedingService seedingService)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SeedingService seedingService)
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
                 seedingService.Seed();
+                app.UseDeveloperExceptionPage();
+
             }
             else
             {

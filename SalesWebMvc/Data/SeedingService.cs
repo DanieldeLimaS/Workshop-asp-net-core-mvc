@@ -1,4 +1,5 @@
 ﻿using SalesWebMvc.Models;
+using SalesWebMvc.Models.Enums;
 using System;
 using System.Linq;
 
